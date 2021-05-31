@@ -1,0 +1,6 @@
+{
+    "id": "pim-relations-repeater-field",
+    "name": "PIM relations field",
+    "srcdoc": "./build/index.html",
+    "fieldTypes": ["Object"]
+  }
