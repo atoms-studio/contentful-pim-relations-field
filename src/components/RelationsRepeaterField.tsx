@@ -151,13 +151,20 @@ const RelationsRepeaterField = (props: FieldProps) => {
     setRows([]);
   }
 
+  const ButtonDeleteAll = (props) => {
+    console.log(props);
+    if(props.rows.length){
+      return <Button icon="Delete" buttonType="negative" size="small" onClick={onDeleteAllButtonClicked}>Delete All</Button>;
+    }
+
+    return null
+  }
+
   return (
     <section>
       <div style={{ marginTop: "10px", marginBottom: "10px" }}>
         <HelpText >{description}</HelpText>
-        <Button icon="Delete" buttonType="negative" size="small" onClick={onDeleteAllButtonClicked}>
-          Delete All
-        </Button>
+        <ButtonDeleteAll rows={rows} />
       </div>
       <div>
         <DragDropContext onDragEnd={(result) => onDragEnd(result)}>

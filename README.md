@@ -1,8 +1,8 @@
-# Contentful Reference Matrix Field App
+# Contentful PIM Relations Repeater Field App
 
 This [Contentful App](https://www.contentful.com/developers/docs/extensibility/app-framework/) adds a custom UI that represents a list of references with some associated plain text – such as a list of recipe ingredients with the respective amounts.
 
-![](./assets/contentful-ingredients-field-demo.gif)
+![](./screenshot.png)
 
 Inspired by [this video](https://www.youtube.com/watch?v=OtmV3TPTbRs) and bootstrapped with [Create Contentful App](https://github.com/contentful/create-contentful-app).
 
