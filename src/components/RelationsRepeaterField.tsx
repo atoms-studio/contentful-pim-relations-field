@@ -49,7 +49,6 @@ const RelationsRepeaterField = (props: FieldProps) => {
     if (!unpopulatedRows.length) {
       return;
     }
-    console.log(1);
 
     const referencedIds = unpopulatedRows.map((row) => row[referenceKey]);
     props.sdk.space
@@ -81,7 +80,6 @@ const RelationsRepeaterField = (props: FieldProps) => {
 
   // update contentful field value whenever rows data changes
   useEffect(() => {
-    console.log(2);
     const sanitizedRows = rows.map((row) => {
       const sanitizedRow = {};
       sanitizedRow[quantity] = row[quantity] || "";
@@ -152,7 +150,6 @@ const RelationsRepeaterField = (props: FieldProps) => {
   }
 
   const ButtonDeleteAll = (props) => {
-    console.log(props);
     if(props.rows.length){
       return <Button icon="Delete" buttonType="negative" size="small" onClick={onDeleteAllButtonClicked}>Delete All</Button>;
     }
