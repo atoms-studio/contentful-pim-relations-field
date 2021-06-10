@@ -39,7 +39,6 @@ const RelationsRepeaterField = (props: FieldProps) => {
   const contentTypes = instanceParameters.contentTypes
     ? instanceParameters.contentTypes.split(/\s*,\s*/g)
     : ["topicProduct"];
-  const description = "You can sort the rows by dragging them.";
   const rowLimitToShow = 5;
   const [isActive, setActive] = useState(rows.length <= rowLimitToShow);
   const [isDisabled, setDisabled] = useState(false);
@@ -214,6 +213,7 @@ const RelationsRepeaterField = (props: FieldProps) => {
                       onClose();
                       onDeleteAllButtonClicked();
                       toggleActive();
+                      setActive(true);
                     }}
                     buttonType="positive"
                   >
@@ -236,6 +236,30 @@ const RelationsRepeaterField = (props: FieldProps) => {
     setActiveLabel(
       status ? `Hide (${rows.length} items)` : `Show (${rows.length} items)`
     );
+  };
+
+  const RepeaterHeader = () => {
+    if (rows.length) {
+      return (
+        <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <HelpText>
+              {isActive
+                ? "You can sort the rows by dragging them."
+                : `${rows.length} items to show`}
+            </HelpText>
+            <Switch
+              id="testSwitch"
+              isChecked={isActive}
+              isDisabled={isDisabled}
+              onToggle={toggleActive}
+              labelText={activeLabel}
+            />
+          </Flex>
+        </div>
+      );
+    }
+    return null;
   };
 
   const RepeaterComponents = (props) => {
@@ -363,18 +387,7 @@ const RelationsRepeaterField = (props: FieldProps) => {
 
   return (
     <section>
-      <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-        <Flex justifyContent="space-between" alignItems="center">
-          <HelpText>{description}</HelpText>
-          <Switch
-            id="testSwitch"
-            isChecked={isActive}
-            isDisabled={isDisabled}
-            onToggle={toggleActive}
-            labelText={activeLabel}
-          />
-        </Flex>
-      </div>
+      <RepeaterHeader />
       <RepeaterComponents fieldId={props.sdk.field.id} />
     </section>
   );
