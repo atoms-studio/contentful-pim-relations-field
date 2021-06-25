@@ -1,27 +1,32 @@
-import React from 'react';
-import { render } from 'react-dom';
+import React from "react";
+import { render } from "react-dom";
 
 import {
+  // AppExtensionSDK,
   FieldExtensionSDK,
-  BaseExtensionSDK,
+  // SidebarExtensionSDK,
+  // DialogExtensionSDK,
+  // EditorExtensionSDK,
+  // PageExtensionSDK,
   init,
-  locations
-} from 'contentful-ui-extensions-sdk';
-import '@contentful/forma-36-react-components/dist/styles.css';
-import '@contentful/forma-36-fcss/dist/styles.css';
-import './index.css';
+  locations,
+} from "@contentful/app-sdk";
+import "@contentful/forma-36-react-components/dist/styles.css";
+import "@contentful/forma-36-fcss/dist/styles.css";
+import "@contentful/forma-36-tokens/dist/css/index.css";
+import "./index.css";
 
-import RelationsRepeaterField from './components/RelationsRepeaterField';
+import RelationsRepeaterField from "./components/RelationsRepeaterField";
 
-import LocalhostWarning from './components/LocalhostWarning';
+import LocalhostWarning from "./components/LocalhostWarning";
 
-if (process.env.NODE_ENV === 'development' && window.self === window.top) {
+if (process.env.NODE_ENV === "development" && window.self === window.top) {
   // You can remove this if block before deploying your app
-  const root = document.getElementById('root');
+  const root = document.getElementById("root");
   render(<LocalhostWarning />, root);
 } else {
-  init((sdk: BaseExtensionSDK) => {
-    const root = document.getElementById('root');
+  init((sdk) => {
+    const root = document.getElementById("root");
 
     // All possible locations for your app
     // Feel free to remove unused locations
@@ -29,12 +34,12 @@ if (process.env.NODE_ENV === 'development' && window.self === window.top) {
     const ComponentLocationSettings = [
       {
         location: locations.LOCATION_ENTRY_FIELD,
-        component: <RelationsRepeaterField sdk={sdk as FieldExtensionSDK} />
+        component: <RelationsRepeaterField sdk={sdk as FieldExtensionSDK} />,
       },
     ];
 
     // Select a component depending on a location in which the app is rendered.
-    ComponentLocationSettings.forEach(componentLocationSetting => {
+    ComponentLocationSettings.forEach((componentLocationSetting) => {
       if (sdk.location.is(componentLocationSetting.location)) {
         render(componentLocationSetting.component, root);
       }

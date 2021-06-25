@@ -1,5 +1,12 @@
 // @ts-nocheck
-import { React, useState, useEffect, useLayoutEffect, Fragment } from "react";
+import {
+  React,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect,
+  Fragment,
+} from "react";
 import {
   Button,
   EditorToolbarButton,
@@ -13,7 +20,7 @@ import {
   Modal,
   Flex,
 } from "@contentful/forma-36-react-components";
-import { FieldExtensionSDK } from "contentful-ui-extensions-sdk";
+import { FieldExtensionSDK } from "@contentful/app-sdk";
 import { v4 as uuid } from "uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -49,6 +56,12 @@ const RelationsRepeaterField = (props: FieldProps) => {
   );
 
   const [isDeleteAllConfirmShown, setDeleteAllConfirmShown] = useState(false);
+
+  const updateActiveLabel = useCallback(() => {
+    setActiveLabel(
+      isActive ? `Hide (${rows.length} items)` : `Show (${rows.length} items)`
+    );
+  }, [rows, isActive]);
 
   // use contentful's builtin auto-resizer
   useEffect(() => {
@@ -113,7 +126,16 @@ const RelationsRepeaterField = (props: FieldProps) => {
       return sanitizedRow;
     });
     props.sdk.field.setValue(sanitizedRows);
-  }, [rows, props.sdk.field, referenceKey, quantity, typeCode, typeLabel]);
+    updateActiveLabel();
+  }, [
+    rows,
+    props.sdk.field,
+    referenceKey,
+    quantity,
+    typeCode,
+    typeLabel,
+    updateActiveLabel,
+  ]);
 
   // open entry selection dialog and append selected entries to the end of our list
   const onAddButtonClicked = () => {
@@ -233,9 +255,7 @@ const RelationsRepeaterField = (props: FieldProps) => {
   const toggleActive = (status) => {
     setDisabled(true);
     setActive(status);
-    setActiveLabel(
-      status ? `Hide (${rows.length} items)` : `Show (${rows.length} items)`
-    );
+    updateActiveLabel();
   };
 
   const RepeaterHeader = () => {
@@ -261,11 +281,17 @@ const RelationsRepeaterField = (props: FieldProps) => {
     }
     return null;
   };
-
-  const RepeaterComponents = (props) => {
-    if (isActive) {
-      return (
-        <section>
+  if (!isActive) {
+    return (
+      <section>
+        <RepeaterHeader />
+      </section>
+    );
+  } else {
+    return (
+      <section>
+        <RepeaterHeader />
+        <div>
           <div>
             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
               <Droppable droppableId="rows">
@@ -379,19 +405,10 @@ const RelationsRepeaterField = (props: FieldProps) => {
               />
             </Flex>
           </div>
-        </section>
-      );
-    }
-    return null;
-  };
-
-  return (
-    <section>
-      <RepeaterHeader />
-      <RepeaterComponents fieldId={props.sdk.field.id} />
-    </section>
-  );
+        </div>
+      </section>
+    );
+  }
 };
 
 export default RelationsRepeaterField;
-// https://contentful-pim-relations-field.netlify.app
